@@ -82,10 +82,10 @@ export class Dialogue {
      * Make sure to check for Dia.finished AFTER calling Next()
      * @constructor
      */
-    Next() {
+    NextLine() {
         this.AddToLog()
         this.currentIndex++
-        if (this.currentIndex > this.script.length - 1){
+        if (this.currentIndex > this.script.length){
             this.finished = true
         }
         this.current = this.script[this.currentIndex]

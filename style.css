@@ -10,6 +10,8 @@ body {
 }
 #DialogueBlock {
     position: absolute;
+    display: flex;
+    justify-content: space-between;
     bottom: 0;
     width: 100%;
     height: 25%;
@@ -30,11 +32,26 @@ body {
 }
 #DialogueBlock #ActorPreview {
     display: flex;
-    position: absolute;
+    flex-direction: column;
     left: 10px;
     top: 10px;
 }
 #DialogueBlock #ActorPreview img{
     width: 12vw;
     height: 12vh;
+}
+
+#DialogueBlock #DialogueHolder {
+    width: 75vw;
+}
+#DialogueBlock #NextButtonHolder{
+    width: 10vw;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+#DialogueBlock #NextButtonHolder button{
+    width: 7vw;
+    height: 5vh;
+    border-radius: 1em 0.1em 1em 0.1em;
 }
