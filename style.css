@@ -68,6 +68,11 @@ body {
 }
 #Terminal #Topbar{
     width: 100%;
-    height: 3vw;
+    height: 5%;
     flex-direction: row;
+}
+#Terminal #Sidebar {
+    height: 95%;
+    width: 10%;
+    display: flex;
 }

@@ -1,11 +1,23 @@
 //Hamid werkt eerst aan dialogue System
-
+import initSqlJS from "sql.js"
+window.addEventListener('load', ()=> {
+    setSQLJS()
+    init();
+    console.log('Initted')
+})
 import {Dialogue} from "./DialoguePrototype/dialogue.js";
 import {variants, labels} from '@catppuccin/palette'
-
-window.addEventListener('load', init)
-
-function init() {
+import {DialogueScreen} from "./src/DialogueScreen.js";
+let SQL
+let db
+async function setSQLJS(){
+    SQL = await initSqlJS({
+        locateFile: file => `./src/sql-wasm.wasm`
+    })
+    db = new SQL.Database();
+    console.log(db)
+}
+async function init() {
     document.querySelector('#app').innerHTML = `
   <div>
   
@@ -20,6 +32,7 @@ function init() {
   </div>
 `
     let protoDiaScreen = new DialogueScreen()
+
 }
 
 export class Terminal {
@@ -49,103 +62,10 @@ export class Terminal {
         this.topbar.style.backgroundColor = variants.mocha.crust.hex
 
         this.terminal.appendChild(this.sidebar)
+        this.topbar.style.backgroundColor = variants.mocha.overlay2.hex
         this.terminal.appendChild(this.termwin)
         this.MainDiv.appendChild(this.terminal)
     }
 
 
 }
-
-export class DialogueScreen {
-    presetDialogueScreen = `<div id="DialogueBlock">
-  
-  <div id="ActorPreview">
-  <img src="" alt="" id="ActorImage"/>
-  <p id="ActorName"></p>
-  </div>
-  
-  <div id="DialogueHolder">
-  <p id="DialogueText"></p>
-  </div>
-  <div id="NextButtonHolder">
-  <button id="NextButton">
-  Next
-</button> 
-  </div>
-  <div id="DiaBlockBar">
-  <p id="">
-  Log
-  </p>
-  </div>
-  </div>`
-
-    constructor() {
-        if (!document.getElementById('DialogueBlock')) {
-            document.querySelector('.overlay').innerHTML = this.presetDialogueScreen
-        }
-        this.DiaBlock = document.querySelector('#DialogueBlock')
-        this.TextDisplay = document.querySelector('#DialogueText')
-        this.ActorNameDisplay = document.querySelector('#ActorName')
-        this.ActorIMGDisplay = document.querySelector('#ActorImage')
-        this.TextDisplay.innerText = this.ProtoDialogue.current.CurrentLine
-        this.ActorNameDisplay.innerText = this.ProtoDialogue.current.CurrentActor
-        this.TextDisplay.style.color = variants.mocha.text.hex
-        this.ActorNameDisplay.style.color = variants.mocha.text.hex
-        this.ActorNameDisplay.style.fontSize = '2em';
-        this.nextButton = document.querySelector('#NextButton')
-        this.nextButton.addEventListener('click', () => this.nextl())
-    }
-
-    ProtoDialogue = new Dialogue('Prototype', [
-        {
-            CurrentActor: 'You',
-            CurrentLine: 'What is this?'
-        },
-        {
-            CurrentActor: 'Narrator',
-            CurrentLine: 'This is a dialogue screen, where the story will be told.'
-        },
-        {
-            CurrentActor: 'Narrator',
-            CurrentLine: 'All will be revealed in time'
-        },
-        {
-            CurrentActor: 'ActionToNext',
-            Action() {
-                document.body.style.backgroundColor = variants.mocha.red.hex
-            }
-        },
-        {
-            CurrentActor: '???',
-            CurrentLine: 'Wendigo, im... not... there...'
-        },
-        {
-            CurrentActor: 'ActionToNext',
-            Action() {
-                let terminal = new Terminal()
-            }
-        }
-    ])
-
-    nextl() {
-        this.ProtoDialogue.NextLine()
-        if (this.ProtoDialogue.finished) {
-            //End Dialogue
-            this.DiaBlock.remove()
-            return;
-        }
-        if (this.ProtoDialogue.current.CurrentActor === 'ActionToNext') {
-            this.ProtoDialogue.current.Action();
-            this.ProtoDialogue.NextLine()
-            if (this.ProtoDialogue.finished) {
-                //End Dialogue
-                this.DiaBlock.remove()
-                return;
-            }
-        }
-        this.TextDisplay.innerText = this.ProtoDialogue.current.CurrentLine
-        this.ActorNameDisplay.innerText = this.ProtoDialogue.current.CurrentActor
-    }
-
-}
-

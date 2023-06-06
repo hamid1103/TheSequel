@@ -12,6 +12,7 @@
     "vite": "^4.3.2"
   },
   "dependencies": {
-    "@catppuccin/palette": "^0.1.8"
+    "@catppuccin/palette": "^0.1.8",
+    "sql.js": "^1.8.0"
   }
 }
