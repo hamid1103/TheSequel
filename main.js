@@ -2,15 +2,16 @@
 
 import {Dialogue} from "./DialoguePrototype/dialogue.js";
 import {variants, labels} from '@catppuccin/palette'
+
 window.addEventListener('load', init)
-function init()
-{
+
+function init() {
     document.querySelector('#app').innerHTML = `
   <div>
   
   <!--The 'Main' div contains anything from wallpaper to the regular game. The dialogue gets on top of that.
   and on top of that is another UI-->
-  <div class="Main">
+  <div id="Main">
   </div>
   
   <div class="overlay">
@@ -19,6 +20,40 @@ function init()
   </div>
 `
     let protoDiaScreen = new DialogueScreen()
+}
+
+export class Terminal {
+    MainDiv = document.getElementById('Main');
+    terminal = document.createElement('div')
+    sidebar = document.createElement('div')
+    topbar = document.createElement('div')
+    termwin = document.createElement('div')
+
+    constructor() {
+        //ID's shouls help with making the css
+        this.MainDiv.classList = 'center'
+
+        this.terminal.id = 'Terminal'
+        this.sidebar.id = 'Sidebar'
+        this.topbar.id = 'Topbar'
+        this.termwin.id = 'TerminalWindow'
+
+        this.terminal.style.width = '85vw'
+        this.terminal.style.height = '90vh'
+        this.terminal.style.left = '50%'
+        this.terminal.style.top = '50%'
+        this.terminal.style.display = 'flex'
+        this.terminal.style.backgroundColor = variants.mocha.base.hex
+
+        this.terminal.appendChild(this.topbar)
+        this.topbar.style.backgroundColor = variants.mocha.crust.hex
+
+        this.terminal.appendChild(this.sidebar)
+        this.terminal.appendChild(this.termwin)
+        this.MainDiv.appendChild(this.terminal)
+    }
+
+
 }
 
 export class DialogueScreen {
@@ -43,8 +78,9 @@ export class DialogueScreen {
   </p>
   </div>
   </div>`
+
     constructor() {
-        if(!document.getElementById('DialogueBlock')){
+        if (!document.getElementById('DialogueBlock')) {
             document.querySelector('.overlay').innerHTML = this.presetDialogueScreen
         }
         this.DiaBlock = document.querySelector('#DialogueBlock')
@@ -57,8 +93,9 @@ export class DialogueScreen {
         this.ActorNameDisplay.style.color = variants.mocha.text.hex
         this.ActorNameDisplay.style.fontSize = '2em';
         this.nextButton = document.querySelector('#NextButton')
-        this.nextButton.addEventListener('click', ()=>this.nextl())
+        this.nextButton.addEventListener('click', () => this.nextl())
     }
+
     ProtoDialogue = new Dialogue('Prototype', [
         {
             CurrentActor: 'You',
@@ -74,26 +111,37 @@ export class DialogueScreen {
         },
         {
             CurrentActor: 'ActionToNext',
-            Action(){
+            Action() {
                 document.body.style.backgroundColor = variants.mocha.red.hex
             }
         },
         {
             CurrentActor: '???',
             CurrentLine: 'Wendigo, im... not... there...'
+        },
+        {
+            CurrentActor: 'ActionToNext',
+            Action() {
+                let terminal = new Terminal()
+            }
         }
     ])
 
-    nextl(){
+    nextl() {
         this.ProtoDialogue.NextLine()
-        if(this.ProtoDialogue.finished){
+        if (this.ProtoDialogue.finished) {
             //End Dialogue
             this.DiaBlock.remove()
             return;
         }
-        if(this.ProtoDialogue.current.CurrentActor === 'ActionToNext'){
-                this.ProtoDialogue.current.Action();
-                this.ProtoDialogue.NextLine()
+        if (this.ProtoDialogue.current.CurrentActor === 'ActionToNext') {
+            this.ProtoDialogue.current.Action();
+            this.ProtoDialogue.NextLine()
+            if (this.ProtoDialogue.finished) {
+                //End Dialogue
+                this.DiaBlock.remove()
+                return;
+            }
         }
         this.TextDisplay.innerText = this.ProtoDialogue.current.CurrentLine
         this.ActorNameDisplay.innerText = this.ProtoDialogue.current.CurrentActor
