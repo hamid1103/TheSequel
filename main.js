@@ -18,24 +18,13 @@ async function setSQLJS(){
         locateFile: file => `./src/sql-wasm.wasm`
     })
     db = new SQL.Database();
-    let sqlInitQuery =
-        'CREATE TABLE `myTable` (\n' +
-        '  `id` mediumint(8) unsigned NOT NULL auto_increment,\n' +
-        '  `name` varchar(255) default NULL,\n' +
-        '  `email` varchar(255) default NULL,\n' +
-        '  `country` varchar(100) default NULL,\n' +
-        '  PRIMARY KEY (`id`)\n' +
-        ') AUTO_INCREMENT=1;' +
-        '' +
-        'INSERT INTO `myTable` (`name`,`email`,`country`)\n' +
-        'VALUES\n' +
-        '  ("Kristen Page","commodo.at@google.com","United Kingdom"),\n' +
-        '  ("Sade Moore","rutrum@aol.com","Netherlands"),\n' +
-        '  ("Orson Warren","orci.lacus@aol.org","South Africa"),\n' +
-        '  ("Maite Morales","rutrum.non@outlook.net","Netherlands"),\n' +
-        '  ("Thomas Castillo","sollicitudin.commodo@protonmail.com","Austria");'
+    let sqlInitQuery = 'CREATE TABLE Main (id INTEGER PRIMARY KEY AUTOINCREMENT, email VARCHAR, name VARCHAR, country VARCHAR);\n' +
+        'INSERT INTO Main (id, email, name, country) VALUES (1, \'cras.lorem@yahoo.com\', \'Brock Downs\', \'Norway\');\n' +
+        'INSERT INTO Main (id, email, name, country) VALUES (2, \'hamid.en.hidde@gmail.com\', \'Hamid\', \'Netherlands\');\n' +
+        'INSERT INTO Main (id, email, name, country) VALUES (3, \'bussiness@arcadianflame.nl\', \'Bussiness\', \'Netherlands\');\n' +
+        'INSERT INTO Main (id, email, name, country) VALUES (4, \'corvo@arcadianflame.nl\', \'Corvo\', \'Netherlands\');'
     db.run(sqlInitQuery)
-    console.log(db)
+    console.log(db.exec("select * from Main where id=2"))
 }
 
 async function init() {
