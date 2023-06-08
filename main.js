@@ -1,13 +1,16 @@
 //Hamid werkt eerst aan dialogue System
 import initSqlJS from "sql.js"
-window.addEventListener('load', ()=> {
-    setSQLJS()
-    init();
-    console.log('Initted')
-})
 import {Dialogue} from "./DialoguePrototype/dialogue.js";
 import {variants, labels} from '@catppuccin/palette'
 import {DialogueScreen} from "./src/DialogueScreen.js";
+
+window.addEventListener('load', ()=> {
+    setSQLJS().then(r =>     console.log('Initted SQL'))
+    init().then(() => {
+        console.log('Initted Game')
+    });
+}, { once: true })
+
 let SQL
 let db
 async function setSQLJS(){
@@ -15,8 +18,26 @@ async function setSQLJS(){
         locateFile: file => `./src/sql-wasm.wasm`
     })
     db = new SQL.Database();
+    let sqlInitQuery =
+        'CREATE TABLE `myTable` (\n' +
+        '  `id` mediumint(8) unsigned NOT NULL auto_increment,\n' +
+        '  `name` varchar(255) default NULL,\n' +
+        '  `email` varchar(255) default NULL,\n' +
+        '  `country` varchar(100) default NULL,\n' +
+        '  PRIMARY KEY (`id`)\n' +
+        ') AUTO_INCREMENT=1;' +
+        '' +
+        'INSERT INTO `myTable` (`name`,`email`,`country`)\n' +
+        'VALUES\n' +
+        '  ("Kristen Page","commodo.at@google.com","United Kingdom"),\n' +
+        '  ("Sade Moore","rutrum@aol.com","Netherlands"),\n' +
+        '  ("Orson Warren","orci.lacus@aol.org","South Africa"),\n' +
+        '  ("Maite Morales","rutrum.non@outlook.net","Netherlands"),\n' +
+        '  ("Thomas Castillo","sollicitudin.commodo@protonmail.com","Austria");'
+    db.run(sqlInitQuery)
     console.log(db)
 }
+
 async function init() {
     document.querySelector('#app').innerHTML = `
   <div>
