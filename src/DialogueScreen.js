@@ -1,6 +1,6 @@
 import {variants} from "@catppuccin/palette";
 import {Dialogue} from "../DialoguePrototype/dialogue.js";
-import {Terminal} from "../main.js";
+import {Terminal} from "./Terminal.js";
 
 export class DialogueScreen {
     presetDialogueScreen = `<div id="DialogueBlock">

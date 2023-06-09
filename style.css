@@ -40,7 +40,6 @@ body {
     width: 12vw;
     height: 12vh;
 }
-
 #DialogueBlock #DialogueHolder {
     width: 75vw;
 }
@@ -68,11 +67,24 @@ body {
 }
 #Terminal #Topbar{
     width: 100%;
-    height: 5%;
+    height: 6%;
     flex-direction: row;
 }
 #Terminal #Sidebar {
-    height: 95%;
+    height: 100%;
     width: 10%;
     display: flex;
+    border-right: #74c7ec 1px solid;
+}
+#Terminal #BrowserWindow{
+    display: flex;
+    flex-direction: column;
+    height: 94%;
+    width: 100%;
+}
+#Terminal #TerminalWindow{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 90%;
 }
