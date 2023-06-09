@@ -82,6 +82,19 @@ body {
     height: 94%;
     width: 100%;
 }
+#Terminal #BrowserWindow #DBQ{
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    flex-direction: column;
+    color: #cdd6f4;
+}
+#Terminal #BrowserWindow #DBOutput {
+background-color: white;
+    color: black;
+}
 #Terminal #TerminalWindow{
     display: flex;
     flex-direction: column;
