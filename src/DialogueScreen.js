@@ -25,7 +25,7 @@ export class DialogueScreen {
   </div>
   </div>`
 
-    constructor() {
+    constructor(_engine) {
         if (!document.getElementById('DialogueBlock')) {
             document.querySelector('.overlay').innerHTML = this.presetDialogueScreen
         }
@@ -40,6 +40,8 @@ export class DialogueScreen {
         this.ActorNameDisplay.style.fontSize = '2em';
         this.nextButton = document.querySelector('#NextButton')
         this.nextButton.addEventListener('click', () => this.nextl())
+
+        this._engine = _engine
     }
 
     ProtoDialogue = new Dialogue('Prototype', [
@@ -67,8 +69,8 @@ export class DialogueScreen {
         },
         {
             CurrentActor: 'ActionToNext',
-            Action() {
-                let terminal = new Terminal()
+            Action: () => {
+                let terminal = new Terminal(this._engine)
             }
         }
     ])

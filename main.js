@@ -7,23 +7,38 @@ import {DialogueScreen} from "./src/DialogueScreen.js";
 export class engine{
     SQL;
     db;
-
+    ToUpdate= []
     constructor() {
+
+    }
+    AddToUpdateList(item){
+        this.ToUpdate.push(item)
+    };
+    Update(){
+        for (let Obj in this.ToUpdate){
+            if(typeof this.ToUpdate[Obj].Update === 'function'){
+                this.ToUpdate[Obj].Update()
+            }
+        }
     }
 
+
 }
+let game = new engine()
+
 
 window.main = () => {
     window.requestAnimationFrame(main)
+    game.Update();
 }
 
 window.addEventListener('load', ()=> {
     setSQLJS().then(r =>     console.log('Initted SQL'))
     init().then(() => {
+        main()
         console.log('Initted Game')
     });
 }, { once: true })
-let game = new engine()
 
 async function setSQLJS(){
     game.SQL = await initSqlJS({
@@ -53,6 +68,6 @@ async function init() {
   </div>
   </div>
 `
-    let protoDiaScreen = new DialogueScreen()
+    let protoDiaScreen = new DialogueScreen(game)
 
 }

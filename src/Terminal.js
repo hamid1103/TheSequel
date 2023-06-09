@@ -1,6 +1,8 @@
 import {variants} from "@catppuccin/palette";
+import {engine} from "../main.js";
 
 export class Terminal {
+    _engine
     MainDiv = document.getElementById('Main');
     terminal = document.createElement('div')
     sidebar = document.createElement('div')
@@ -10,7 +12,10 @@ export class Terminal {
     browserinst = new BrowserWindow()
     browserdiv = this.browserinst.browserwindow
 
-    constructor() {
+    constructor(_engine) {
+        this._engine = _engine
+        this._engine.AddToUpdateList(this)
+
         //ID's shouls help with making the css
         this.MainDiv.classList = 'center'
 
@@ -37,6 +42,8 @@ export class Terminal {
 
         this.terminal.appendChild(this.termwin)
         this.MainDiv.appendChild(this.terminal)
+    }
+    Update(){
     }
 }
 
