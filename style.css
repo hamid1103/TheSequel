@@ -92,8 +92,7 @@ body {
     color: #cdd6f4;
 }
 #Terminal #BrowserWindow #DBOutput {
-background-color: white;
-    color: black;
+
 }
 #Terminal #TerminalWindow{
     display: flex;

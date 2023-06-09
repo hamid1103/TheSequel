@@ -75,8 +75,32 @@ export class BrowserWindow {
     callQuerry =(e)=>{
         let QRes = this._engine.db.exec(e.target.value)
         this.result = QRes[0]
-        this.DBOutput.innerText = JSON.stringify(this.result)
+        this.DBOutput.innerHTML = ''
+        this.DBOutput.appendChild(this.CreateSQLTable(this.result.columns, this.result.values))
         console.log(this.result)
+    }
+
+    CreateSQLTable = (Headers, Values) =>{
+        console.log(Headers)
+        let Table = document.createElement('table')
+        let THead = Table.createTHead()
+        let HROW = THead.insertRow()
+        for(let header in Headers){
+            let th = document.createElement('th')
+            let text = document.createTextNode(Headers[header])
+            th.appendChild(text)
+            HROW.appendChild(th)
+        }
+        for(let row in Values){
+            let newRow = Table.insertRow()
+            for(let data in Values[row]){
+                let td = document.createElement('td')
+                let text = document.createTextNode(Values[row][data])
+                td.appendChild(text)
+                newRow.appendChild(td)
+            }
+        }
+        return Table
     }
 
     onInit() {
@@ -88,15 +112,19 @@ export class BrowserWindow {
             this.DBinput = document.createElement('input')
             this.DBinput.id = 'DBInput'
             this.DBinput.value = this.currentQuerry
-            this.DBOutput = document.createElement('textarea')
-            this.DBOutput.disabled = true
+            this.DBOutput = document.createElement('div')
             this.DBOutput.id="DBOutput"
 
-            this.DBinput.addEventListener('change', this.callQuerry)
+            this.DBinput.addEventListener('keyup', this.callQuerry)
             this.DBQ.appendChild(this.label)
             this.DBQ.appendChild(this.DBinput)
             this.DBQ.appendChild(this.DBOutput)
             this.browserwindow.appendChild(this.DBQ);
+
+            let QRes = this._engine.db.exec('select * from Main where id=1')
+            this.result = QRes[0]
+            this.DBOutput.innerHTML = ''
+            this.DBOutput.appendChild(this.CreateSQLTable(this.result.columns, this.result.values))
         }
 
     }

@@ -51,7 +51,7 @@ async function setSQLJS(){
         'INSERT INTO Main (id, email, name, country) VALUES (3, \'bussiness@arcadianflame.nl\', \'Bussiness\', \'Netherlands\');\n' +
         'INSERT INTO Main (id, email, name, country) VALUES (4, \'corvo@arcadianflame.nl\', \'Corvo\', \'Netherlands\');'
     game.db.run(sqlInitQuery)
-    console.log(game.db.exec("select * from Main where id=1"))
+    console.log(game.db.exec("select * from Main"))
 }
 
 async function init() {
