@@ -45,6 +45,13 @@ export class Terminal {
         this.MainDiv.appendChild(this.terminal)
     }
 
+    HideTerminal(){
+        this.terminal.style.display = 'none'
+    }
+    ShowTerminal(){
+        this.terminal.style.display = 'flex'
+    }
+
     Update() {
     }
 }
