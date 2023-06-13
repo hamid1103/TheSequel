@@ -17,6 +17,7 @@ export class Terminal {
 
         //ID's shouls help with making the css
         this.MainDiv.classList = 'center'
+        this.oldTab = this.topbarInstance.currentActiveTab
 
         this.browserinst  = new BrowserWindow(this._engine)
         this.browserdiv = this.browserinst.browserwindow
@@ -53,17 +54,58 @@ export class Terminal {
     }
 
     Update() {
+        if(this.topbarInstance.currentActiveTab !== this.oldTab){
+            this.oldTab = this.topbarInstance.currentActiveTab
+            this.browserinst.currentTab = this.topbarInstance.currentActiveTab
+            this.browserinst.setWin();
+            console.log(this.topbarInstance.currentActiveTab)
+        }
+    }
+}
+
+export class Tab{
+    icon;
+    name;
+    tooltip;
+
+    topbardiv;
+    tabDiv;
+    tooltipdiv;
+    constructor(name, icon, tooltip,topbardiv) {
+        this.tooltip = tooltip
+        this.topbardiv = topbardiv
+        this.tabDiv = document.createElement('div')
+        this.tabDiv.classList = 'tooltip tab'
+        this.tabDiv.id=name
+        this.tabDiv.innerText = name
+        this.name = name;
+        this.icon = icon;
+
+        this.tooltipdiv = document.createElement('div')
+        this.tooltipdiv.classList = 'tooltiptext'
+        this.tooltipdiv.innerText = name
+
+        this.tabDiv.appendChild(this.tooltipdiv)
+        this.topbardiv.appendChild(this.tabDiv)
     }
 }
 
 export class Topbar {
     topbar;
-    tabs;
+    tabs = [];
     currentActiveTab;
     alertTab;
 
-    constructor() {
+    constructor(currentActiveTab = 'DBQ') {
         this.topbar = document.createElement('div')
+        this.currentActiveTab = currentActiveTab
+        this.DBQ = new Tab('DBQ', '', 'Database Query Tool', this.topbar)
+        this.LSQLMan = new Tab('LSQLMan', '', 'LightSQL Manual', this.topbar)
+        this.topbar.addEventListener('click', (e)=>{
+            if(e.target.classList.contains('tab')){
+                this.currentActiveTab = e.target.id
+            }
+        })
     }
 }
 
@@ -111,12 +153,23 @@ export class BrowserWindow {
         return Table
     }
 
-    onInit() {
+    setWin(first = false){
+        this.browserwindow.innerHTML = ''
         switch (this.currentTab){
             case 'DBQ':
-                this.setDBQ(true)
+                this.setDBQ(first)
                 break;
+            case 'LSQLMan':
+                this.setLSQLMan()
+                break;
+            default:
+                this.browserwindow.innerHTML = 'Page dont exist'
+                this.browserwindow.style.color = variants.mocha.text.hex
+                break
         }
+    }
+    onInit() {
+        this.setWin(true)
     }
 
     setDBQ(first = false){
@@ -152,6 +205,10 @@ export class BrowserWindow {
         this.result = QRes[0]
         this.DBOutput.innerHTML = ''
         this.DBOutput.appendChild(this.CreateSQLTable(this.result.columns, this.result.values))
+    }
+
+    setLSQLMan(){
+
     }
 
 }
