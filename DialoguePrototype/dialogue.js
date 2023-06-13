@@ -85,7 +85,7 @@ export class Dialogue {
     NextLine() {
         this.AddToLog()
         this.currentIndex++
-        if (this.currentIndex > this.script.length){
+        if (this.currentIndex >= this.script.length){
             this.finished = true
         }
         this.current = this.script[this.currentIndex]

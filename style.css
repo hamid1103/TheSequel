@@ -2,12 +2,13 @@ body {
     margin: 0;
 }
 
-.overlay {
+#overlay {
     display: block;
     position: fixed;
     width: 100%;
     height: 100%;
 }
+
 #DialogueBlock {
     position: absolute;
     display: flex;
@@ -55,6 +56,7 @@ body {
     border-radius: 1em 0.1em 1em 0.1em;
 }
 #Main.center {
+    position: fixed;
     width: 100%;
     height: 100%;
     display: flex;
@@ -93,6 +95,11 @@ body {
 }
 #Terminal #BrowserWindow #DBOutput {
 
+}
+#Terminal #BrowserWindow #TablesOutput {
+    position: relative;
+    left: 0;
+    top: 0;
 }
 #Terminal #TerminalWindow{
     display: flex;

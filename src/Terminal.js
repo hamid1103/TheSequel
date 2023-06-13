@@ -84,6 +84,7 @@ export class BrowserWindow {
         this.result = QRes[0]
         this.DBOutput.innerHTML = ''
         this.DBOutput.appendChild(this.CreateSQLTable(this.result.columns, this.result.values))
+        this.lastQuerry = e.target.value
         console.log(this.result)
     }
 
@@ -111,29 +112,46 @@ export class BrowserWindow {
     }
 
     onInit() {
-        if (this.currentTab === 'DBQ') {
-            this.DBQ = document.createElement('div')
-            this.DBQ.id = 'DBQ'
-            this.label = document.createElement('label')
-            this.label.innerText = "SQL Query"
-            this.DBinput = document.createElement('input')
-            this.DBinput.id = 'DBInput'
-            this.DBinput.value = this.currentQuerry
-            this.DBOutput = document.createElement('div')
-            this.DBOutput.id="DBOutput"
-
-            this.DBinput.addEventListener('keyup', this.callQuerry)
-            this.DBQ.appendChild(this.label)
-            this.DBQ.appendChild(this.DBinput)
-            this.DBQ.appendChild(this.DBOutput)
-            this.browserwindow.appendChild(this.DBQ);
-
-            let QRes = this._engine.db.exec('select * from Main where id=1')
-            this.result = QRes[0]
-            this.DBOutput.innerHTML = ''
-            this.DBOutput.appendChild(this.CreateSQLTable(this.result.columns, this.result.values))
+        switch (this.currentTab){
+            case 'DBQ':
+                this.setDBQ(true)
+                break;
         }
+    }
 
+    setDBQ(first = false){
+        this.DBQ = document.createElement('div')
+        this.DBQ.id = 'DBQ'
+        this.label = document.createElement('label')
+        this.label.innerText = "SQL Query"
+        this.DBinput = document.createElement('input')
+        this.DBinput.id = 'DBInput'
+        this.DBinput.value = this.currentQuerry
+        this.DBOutput = document.createElement('div')
+        this.DBOutput.id="DBOutput"
+        this.DBTablesO = document.createElement('div')
+
+        this.DBinput.addEventListener('keyup', this.callQuerry)
+        this.DBQ.appendChild(this.label)
+        this.DBQ.appendChild(this.DBinput)
+        this.DBQ.appendChild(this.DBOutput)
+        this.browserwindow.appendChild(this.DBQ);
+        this.browserwindow.appendChild(this.DBTablesO)
+
+        let QTables = this._engine.db.exec(`select name from sqlite_schema where type='table' AND name not LIKE 'sqlite_%'`)
+        let QTablesResult = QTables[0]
+        this.DBTablesO.style.color = variants.mocha.text.hex
+        this.DBTablesO.appendChild(this.CreateSQLTable(QTablesResult.columns, QTablesResult.values))
+
+        let QRes
+        if(first){
+            QRes = this._engine.db.exec('select * from Main where id=1')
+        }else {
+            QRes = this._engine.db.exec(this.lastQuerry)
+        }
+        this.result = QRes[0]
+        this.DBOutput.innerHTML = ''
+        this.DBOutput.appendChild(this.CreateSQLTable(this.result.columns, this.result.values))
     }
 
 }

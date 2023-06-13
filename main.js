@@ -3,13 +3,14 @@ import initSqlJS from "sql.js"
 import {Dialogue} from "./DialoguePrototype/dialogue.js";
 import {variants, labels} from '@catppuccin/palette'
 import {DialogueScreen} from "./src/DialogueScreen.js";
+import {Terminal} from "./src/Terminal.js";
 
 export class engine{
     SQL;
     db;
     ToUpdate= []
     constructor() {
-
+        document.body.style.background = variants.mocha.base.hex
     }
     AddToUpdateList(item){
         this.ToUpdate.push(item)
@@ -51,6 +52,8 @@ async function setSQLJS(){
         'INSERT INTO Main (id, email, name, country) VALUES (3, \'bussiness@arcadianflame.nl\', \'Bussiness\', \'Netherlands\');\n' +
         'INSERT INTO Main (id, email, name, country) VALUES (4, \'corvo@arcadianflame.nl\', \'Corvo\', \'Netherlands\');'
     game.db.run(sqlInitQuery)
+    game.terminal = new Terminal(game)
+    game.terminal.HideTerminal()
     console.log(game.db.exec("select * from Main"))
 }
 
@@ -63,7 +66,7 @@ async function init() {
   <div id="Main">
   </div>
   
-  <div class="overlay">
+  <div id="overlay">
   
   </div>
   </div>
