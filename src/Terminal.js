@@ -53,6 +53,7 @@ export class Terminal {
         this.terminal.style.display = 'flex'
     }
 
+    goalReached = false;
     Update() {
         if(this.topbarInstance.currentActiveTab !== this.oldTab){
             this.oldTab = this.topbarInstance.currentActiveTab
@@ -60,6 +61,16 @@ export class Terminal {
             this.browserinst.setWin();
             console.log(this.topbarInstance.currentActiveTab)
         }
+        try {
+            if(this.browserinst.currentQuerryResult.values[0][0] === 4 && !this.goalReached){
+                alert("GOAL REACHED")
+                this.goalReached = true
+            }
+        }
+        catch(err) {
+            // do nothing
+        }
+
     }
 }
 
@@ -83,7 +94,7 @@ export class Tab{
 
         this.tooltipdiv = document.createElement('div')
         this.tooltipdiv.classList = 'tooltiptext'
-        this.tooltipdiv.innerText = name
+        this.tooltipdiv.innerText = this.tooltip
 
         this.tabDiv.appendChild(this.tooltipdiv)
         this.topbardiv.appendChild(this.tabDiv)
@@ -113,6 +124,7 @@ export class BrowserWindow {
     browserwindow
     currentTab;
     currentQuerry = "select * from Main where id=1";
+    currentQuerryResult
 
     constructor(_engine ,currentTab = 'DBQ') {
         this.browserwindow = document.createElement('div')
@@ -122,11 +134,13 @@ export class BrowserWindow {
     }
 
     callQuerry =(e)=>{
+        this.currentQuerry = e.target.value
         let QRes = this._engine.db.exec(e.target.value)
         this.result = QRes[0]
         this.DBOutput.innerHTML = ''
         this.DBOutput.appendChild(this.CreateSQLTable(this.result.columns, this.result.values))
         this.lastQuerry = e.target.value
+        this.currentQuerryResult = this.result
         console.log(this.result)
     }
 

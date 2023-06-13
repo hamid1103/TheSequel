@@ -124,6 +124,10 @@ export class DialogueScreen {
             Action: (engine)=> {
                 engine.terminal.ShowTerminal()
             }
+        },
+        {
+            CurrentActor: 'Raemond',
+            CurrentLine: "Try to make it so only the account with the name 'Corvo' pops up."
         }
     ])
 
