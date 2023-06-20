@@ -36,6 +36,7 @@ export class DialogueScreen {
         this.TextDisplay.innerText = this.ProtoDialogue.current.CurrentLine
         this.ActorNameDisplay.innerText = this.ProtoDialogue.current.CurrentActor
         this.TextDisplay.style.color = variants.mocha.text.hex
+        this.TextDisplay.style.fontSize = '3em'
         this.ActorNameDisplay.style.color = variants.mocha.text.hex
         this.ActorNameDisplay.style.fontSize = '2em';
         this.nextButton = document.querySelector('#NextButton')
@@ -54,7 +55,8 @@ export class DialogueScreen {
             CurrentLine: 'What is this?',
             CurrentDispActor: 'You',
             Action() {
-                document.body.style.backgroundColor = variants.mocha.red.hex
+                document.body.style.backgroundImage = 'url("./src/wp.png")'
+                document.body.style.backgroundSize = 'cover'
             }
         },
         {
